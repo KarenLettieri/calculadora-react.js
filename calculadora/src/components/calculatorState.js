@@ -6,6 +6,7 @@ const AppContext = createContext({
 memory: null,
 operation: null,
 currentValue: 0,
+isDecimal: false,
 
 /* methods */
 addNumber: (value) => {},
@@ -22,15 +23,31 @@ export default function CalculatorState({children}) {
     const [operation, setOperation] = useState(null);
     const [currentValue, setCurrentValue] = useState(0);
     const [isReset, setIsReset] = useState(true);
+    const [isDecimal, setIsDecimal] = useState(false);
 
     function handleAddNumber(value) {
         if(isReset) {
-            setCurrentValue(parseInt(value));
-            setIsReset(false);
-
+            if(value === '.') {
+                setIsDecimal(true);
+            } else {
+                const point = isDecimal ? '.' : '';
+                const newValue = currentValue.toString()+ point + value.toString();
+                setCurrentValue(parseFloat(newValue));
+                setIsReset(false);
+                setIsDecimal(false);
+            }
+        
+            
         } else {
-            const newValue = currentValue.toString() + value;
-            setCurrentValue(parseFloat(newValue))
+            if(value === '.') { 
+                setIsDecimal(true);
+            } else {
+                const point = isDecimal ? '.' : '';
+                const newValue = currentValue.toString()+ point + value.toString();
+                setIsDecimal(false);
+                setCurrentValue(parseFloat(newValue));
+            }
+        
         }
 
     }
@@ -85,6 +102,7 @@ export default function CalculatorState({children}) {
             setOperation(null);
             setMemory(result);
             setIsReset(true);
+            setIsDecimal(false);
         }
 
     }
@@ -95,11 +113,27 @@ export default function CalculatorState({children}) {
         setOperation(null);
         setMemory(0);
         setIsReset(true);
+        setIsDecimal(false);
 
     }
 
     function deleteNumber(){
-        setCurrentValue(parseInt(currentValue/10));
+        const index = currentValue.toString().indexOf('.');
+        if(index > 0) { //decimal 
+            const numberOfDecimals = currentValue.toString().slice(index + 1).length;
+            if(numberOfDecimals === 1) {
+                const min = Math.floor(currentValue)
+                setCurrentValue(min)
+
+            } else {
+                const newNumber = parseFloat(currentValue).toFixed(numberOfDecimals - 1);
+                setCurrentValue(newNumber);
+            }
+
+        } else { 
+            setCurrentValue(parseInt(currentValue/10));
+        }
+
     }
 
     function changeSign() {
@@ -149,6 +183,7 @@ export default function CalculatorState({children}) {
         memory,
         operation,
         currentValue,
+        isDecimal,
         addNumber: handleAddNumber,
         addOperation: handleAddOperation,
         getResult: handleGetResult,

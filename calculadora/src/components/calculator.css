@@ -1,0 +1,59 @@
+* {
+background-color: #eaebf3;
+
+}
+
+
+.calculatorContainer{
+    width: 30em;
+    margin: 6em auto;
+    
+}
+
+.container {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
+    gap: 0px;
+    grid-template-areas: 
+    ". . . ."
+    ". . . ."
+    ". . . ."
+    ". . . ."
+    ". . . ."
+    ". . . .";
+}
+
+.calculatorButton {
+    padding: 1.25em;
+    font-size: 1.8em;
+    background-color: #5A5A5A;
+    color: white;
+    cursor: pointer;
+    border: solid 0.1px #343434;
+}
+
+.calculatorButton:hover {
+    background-color: #222;
+}
+
+.calculatorScreen {
+    display: flex;
+    flex-direction: column;
+    text-align: right;
+    border: solid 3px #222;
+    margin-bottom: 1em;
+    border-radius: 20px ;
+    padding-left: 1em ;
+    padding-right: 1em ;
+    
+}
+
+.memop {
+    font-weight: bold;
+}
+
+.calculatorCurrentValue {
+    font-size: 4em ;
+    font-weight: bold;
+}
